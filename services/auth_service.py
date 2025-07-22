@@ -48,3 +48,12 @@ def verify_token(token: str) -> Optional[str]:
         return email
     except JWTError:
         return None
+
+
+def decode_token(token: str) -> Optional[dict]:
+    """Decode JWT token and return payload if valid"""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None

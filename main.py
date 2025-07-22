@@ -8,7 +8,8 @@ from generators.project_generator import ProjectGenerator
 from services.ai_generator import AIProjectGenerator
 from services.image_service import ImageService
 from models.database import engine, Base
-from routers import auth, projects
+from models.user_project_access import UserProjectAccess  # Import para crear tabla
+from routers import auth, projects, collaboration
 import os
 import base64
 import io
@@ -20,6 +21,7 @@ app = FastAPI(title="Flutter Code Generator", description="Generate Flutter apps
 # Include routers
 app.include_router(auth.router)
 app.include_router(projects.router)
+app.include_router(collaboration.router)
 
 # Configure CORS
 app.add_middleware(

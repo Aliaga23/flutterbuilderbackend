@@ -32,11 +32,25 @@ async def project_ws(ws: WebSocket, project_id: UUID):
     if payload is None:
         await ws.close(code=status.WS_1008_POLICY_VIOLATION)
         return
-    user_id = UUID(payload["sub"])
-
-    # 2️⃣  — insertar acceso si falta —
+    
+    # El payload["sub"] puede ser un email, necesitamos obtener el user_id
+    user_email = payload.get("sub")
+    if not user_email:
+        await ws.close(code=status.WS_1008_POLICY_VIOLATION)
+        return
+    
+    # Buscar el usuario por email para obtener su UUID
     session = SessionLocal()
     try:
+        from models.user import User
+        user = session.query(User).filter(User.email == user_email).first()
+        if not user:
+            session.close()
+            await ws.close(code=status.WS_1008_POLICY_VIOLATION)
+            return
+        user_id = user.id
+
+        # 2️⃣  — insertar acceso si falta —
         exists = (
             session.query(UserProjectAccess)
             .filter_by(user_id=user_id, project_id=project_id)
@@ -51,6 +65,11 @@ async def project_ws(ws: WebSocket, project_id: UUID):
             session.commit()
     except IntegrityError:
         session.rollback()
+    except Exception as e:
+        session.rollback()
+        session.close()
+        await ws.close(code=status.WS_1011_INTERNAL_ERROR)
+        return
     finally:
         session.close()
 

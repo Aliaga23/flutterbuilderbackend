@@ -410,7 +410,6 @@ PROPIEDADES ESPECÍFICAS:
 - text: { "text": "texto", "fontSize": 16, "color": "#000000", "fontWeight": "normal", "textAlign": "left" }
 - button: { "text": "texto", "backgroundColor": "#2196F3", "textColor": "#FFFFFF", "fontSize": 16, "borderRadius": 8 }
 - textfield: { "placeholder": "texto", "borderColor": "#D1D1D6", "borderRadius": 8 }
-- container: { "color": "#E3F2FD", "padding": 16, "margin": 8, "borderRadius": 4 }
 - icon: { "iconName": "star", "size": 24, "color": "#000000" }
 - checkbox: { "label": "Checkbox", "value": false, "activeColor": "#2196F3" }
 - switch: { "value": false, "activeColor": "#2196F3" }
@@ -467,7 +466,7 @@ Responde SOLO con el JSON válido, sin explicaciones adicionales."""
         try:
             # Llamar a la API de OpenAI con la imagen
             response = self.client.chat.completions.create(
-                model="o1",
+                model="gpt-4o",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {

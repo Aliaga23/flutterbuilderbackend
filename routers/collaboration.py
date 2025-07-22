@@ -2,6 +2,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, status
 from uuid import UUID
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
+from starlette.websockets import WebSocketState
 
 from models.database import SessionLocal
 from models.user_project_access import UserProjectAccess
@@ -81,10 +82,28 @@ async def project_ws(ws: WebSocket, project_id: UUID):
     try:
         while True:
             msg = await ws.receive_text()
+            # Lista de conexiones a remover si están cerradas
+            closed_connections = []
+            
             for peer in _rooms[project_id]:
                 if peer is not ws:
-                    await peer.send_text(msg)
+                    try:
+                        # Verificar si el WebSocket está abierto antes de enviar
+                        if peer.client_state == WebSocketState.CONNECTED:
+                            await peer.send_text(msg)
+                        else:
+                            closed_connections.append(peer)
+                    except Exception:
+                        # Si hay error al enviar, marcar para remover
+                        closed_connections.append(peer)
+            
+            # Remover conexiones cerradas
+            for closed_peer in closed_connections:
+                if closed_peer in _rooms[project_id]:
+                    _rooms[project_id].remove(closed_peer)
+                    
     except WebSocketDisconnect:
-        _rooms[project_id].remove(ws)
+        if ws in _rooms[project_id]:
+            _rooms[project_id].remove(ws)
         if not _rooms[project_id]:
             _rooms.pop(project_id, None)

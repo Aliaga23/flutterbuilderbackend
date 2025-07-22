@@ -64,6 +64,9 @@ class ProjectGenerator:
     
     def _generate_main_dart(self, project: FlutterProject, project_dir: str):
         """Generate main.dart file"""
+        # Make sure the lib directory exists even if it's missing from the base template
+        os.makedirs(os.path.join(project_dir, 'lib'), exist_ok=True)
+        
         template = self.env.get_template('main.dart.j2')
         
         # Get the first page as the initial route

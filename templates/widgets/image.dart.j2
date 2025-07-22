@@ -1,0 +1,14 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: Image.network(
+    '{{ src }}',
+    fit: {{ fit }},
+    errorBuilder: (context, error, stackTrace) {
+      return Container(
+        color: Colors.grey[300],
+        child: Icon(Icons.image_not_supported, color: Colors.grey[600]),
+      );
+    },
+  ),
+)

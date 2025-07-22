@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'dart:math' as math;
+
+class {{ page_class_name }} extends StatefulWidget {
+  const {{ page_class_name }}({Key? key}) : super(key: key);
+
+  @override
+  State<{{ page_class_name }}> createState() => _{{ page_class_name }}State();
+}
+
+class _{{ page_class_name }}State extends State<{{ page_class_name }}> {
+  // Estados para widgets interactivos
+  final Map<String, TextEditingController> _textControllers = {};
+  final Map<String, bool> _switchStates = {};
+  final Map<String, bool> _radioStates = {};
+  final Map<String, List<bool>> _checklistStates = {};
+  final Map<String, double> _sliderStates = {};
+  int _selectedNavIndex = {{ current_nav_index | default(0) }};
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializar estados de widgets
+    {% for widget in widgets -%}
+    {% if widget.widget_id -%}
+    _initializeWidgetState('{{ widget.widget_id }}', '{{ widget.widget_type }}', {{ widget.initial_state }});
+    {% endif -%}
+    {% endfor -%}
+  }
+
+  void _initializeWidgetState(String widgetId, String type, dynamic initialState) {
+    switch (type) {
+      case 'textfield':
+        _textControllers[widgetId] = TextEditingController();
+        break;
+      case 'switch':
+        _switchStates[widgetId] = initialState ?? false;
+        break;
+      case 'radio':
+        _radioStates[widgetId] = initialState ?? false;
+        break;
+      case 'checklist':
+        _checklistStates[widgetId] = List<bool>.from(initialState ?? []);
+        break;
+      case 'slider':
+        _sliderStates[widgetId] = (initialState ?? 0.5).toDouble();
+        break;
+    }
+  }
+
+  void _navigateToPage(int index) {
+    // Mapeo de índices a rutas de páginas
+    final routes = [
+      {% if page_routes -%}
+      {% for route in page_routes -%}
+      '{{ route }}',
+      {% endfor -%}
+      {% else -%}
+      '/',  // Ruta por defecto
+      {% endif -%}
+    ];
+    
+    if (index < routes.length && routes[index] != ModalRoute.of(context)?.settings.name) {
+      Navigator.pushReplacementNamed(context, routes[index]);
+    }
+  }
+
+  @override
+  void dispose() {
+    _textControllers.values.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      {% if appbar -%}
+      appBar: {{ appbar }},
+      {% endif -%}
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: {{ background_color }},
+          child: Stack(
+            children: [
+              {% for widget in widgets -%}
+              {{ widget }},
+              {% endfor -%}
+            ],
+          ),
+        ),
+      ),
+      {% if bottomnav -%}
+      bottomNavigationBar: {{ bottomnav }},
+      {% endif -%}
+    );
+  }
+}

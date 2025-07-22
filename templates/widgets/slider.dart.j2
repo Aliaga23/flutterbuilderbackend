@@ -1,0 +1,16 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: Slider(
+    value: _sliderStates['{{ widget_id }}'] ?? {{ value }}.0,
+    min: {{ min }}.0,
+    max: {{ max }}.0,
+    onChanged: (double value) {
+      setState(() {
+        _sliderStates['{{ widget_id }}'] = value;
+      });
+      print('Slider {{ widget_id }} changed: $value');
+    },
+    activeColor: {{ active_color }},
+  ),
+)

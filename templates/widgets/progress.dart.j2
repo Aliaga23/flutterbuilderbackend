@@ -1,0 +1,9 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: LinearProgressIndicator(
+    value: {{ value }},
+    backgroundColor: {{ background_color }},
+    valueColor: AlwaysStoppedAnimation<Color>({{ value_color }}),
+  ),
+)

@@ -1,0 +1,24 @@
+BottomNavigationBar(
+  currentIndex: _selectedNavIndex,
+  type: BottomNavigationBarType.fixed,
+  backgroundColor: {{ background_color }},
+  selectedItemColor: {{ selected_color }},
+  unselectedItemColor: {{ unselected_color }},
+  selectedLabelStyle: TextStyle(fontSize: {{ font_size_px }}),
+  unselectedLabelStyle: TextStyle(fontSize: {{ font_size_px }}),
+  items: [
+    {% for item in items -%}
+    BottomNavigationBarItem(
+      icon: Icon({{ item.icon }}),
+      label: '{{ item.label }}',
+    ),
+    {% endfor -%}
+  ],
+  onTap: (index) {
+    setState(() {
+      _selectedNavIndex = index;
+    });
+    // Navegación entre páginas basada en el índice
+    _navigateToPage(index);
+  },
+)

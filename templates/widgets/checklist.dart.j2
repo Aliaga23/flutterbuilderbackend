@@ -1,0 +1,28 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: Column(
+    children: [
+      {% for item in items -%}
+      CheckboxListTile(
+        title: Text(
+          '{{ item.text }}',
+          style: TextStyle(
+            color: {{ item_color }},
+            fontSize: {{ font_size_px }},
+          ),
+        ),
+        value: _checklistStates['{{ widget_id }}']?[{{ loop.index0 }}] ?? false,
+        onChanged: (bool? value) {
+          setState(() {
+            _checklistStates['{{ widget_id }}'] ??= List.filled({{ items|length }}, false);
+            _checklistStates['{{ widget_id }}']![{{ loop.index0 }}] = value ?? false;
+          });
+          print('Checklist {{ widget_id }} item {{ loop.index0 }} changed: $value');
+        },
+        activeColor: {{ checked_color }},
+      ),
+      {% endfor -%}
+    ],
+  ),
+)

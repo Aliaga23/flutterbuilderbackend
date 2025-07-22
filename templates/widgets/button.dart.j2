@@ -1,0 +1,13 @@
+ElevatedButton(
+  onPressed: () {},
+  style: ElevatedButton.styleFrom(
+    backgroundColor: {{ bg_color }},
+    foregroundColor: {{ text_color }},
+    textStyle: TextStyle(fontSize: {{ font_size_px }}),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular({{ border_radius_px }}),
+    ),
+    minimumSize: Size({{ width }}, {{ height }}),
+  ),
+  child: Text('{{ text }}'),
+)

@@ -1,0 +1,14 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: Switch(
+    value: _switchStates['{{ widget_id }}'] ?? false,
+    onChanged: (bool value) {
+      setState(() {
+        _switchStates['{{ widget_id }}'] = value;
+      });
+      print('Switch {{ widget_id }} changed: $value');
+    },
+    activeColor: {{ active_color }},
+  ),
+)

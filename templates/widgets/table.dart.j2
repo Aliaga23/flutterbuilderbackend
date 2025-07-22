@@ -1,0 +1,69 @@
+Container(
+  width: MediaQuery.of(context).size.width,
+  height: {{ height }},
+  decoration: {% if show_borders %}BoxDecoration(
+    border: Border.all(color: {{ border_color }}, width: 1.0),
+    borderRadius: BorderRadius.circular(4.0),
+  ){% else %}null{% endif %},
+  child: SingleChildScrollView(
+    scrollDirection: Axis.vertical,
+    child: SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: {{ padding_px }}.0,
+        horizontalMargin: {{ padding_px }}.0,
+        headingRowHeight: {{ (font_size_px * 3) }}.0,
+        dataRowHeight: {{ (font_size_px * 2.5) }},
+        headingRowColor: MaterialStateProperty.all({{ header_color }}),
+        {% if show_borders %}border: TableBorder.all(
+          color: {{ border_color }},
+          width: 0.5,
+        ),{% endif %}
+        columns: [
+          {% for column in columns -%}
+          DataColumn(
+            label: Container(
+              constraints: BoxConstraints(minWidth: 80),
+              child: Text(
+                '{{ column }}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: {{ header_text_color }},
+                  fontSize: {{ font_size_px }}.0,
+                ),
+                overflow: TextOverflow.visible,
+              ),
+            ),
+          ),
+          {% endfor -%}
+        ],
+        rows: [
+          {% for row in rows -%}
+          DataRow(
+            color: MaterialStateProperty.all(
+              {% if loop.index0 % 2 == 1 %}{{ alternate_row_color }}{% else %}{{ row_color }}{% endif %}
+            ),
+            cells: [
+              {% for cell in row -%}
+              DataCell(
+                Container(
+                  constraints: BoxConstraints(minWidth: 80),
+                  child: Text(
+                    '{{ cell }}',
+                    style: TextStyle(
+                      color: {{ text_color }},
+                      fontSize: {{ font_size_px }}.0,
+                    ),
+                    overflow: TextOverflow.visible,
+                  ),
+                ),
+              ),
+              {% endfor -%}
+            ],
+          ),
+          {% endfor -%}
+        ],
+      ),
+    ),
+  ),
+)

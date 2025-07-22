@@ -1,0 +1,11 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: CheckboxListTile(
+    title: Text('{{ label }}'),
+    value: {{ value }},
+    onChanged: (bool? value) {},
+    activeColor: {{ active_color }},
+    controlAffinity: ListTileControlAffinity.leading,
+  ),
+)

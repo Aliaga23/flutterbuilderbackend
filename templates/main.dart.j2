@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+{% for import in page_imports -%}
+{{ import }}
+{% endfor -%}
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '{{ app_name }}',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(int.parse('{{ theme_primary_color }}'.substring(1, 7), radix: 16) + 0xFF000000),
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      initialRoute: '{{ initial_route }}',
+      routes: {
+        {% for route, class_name in routes.items() -%}
+        '{{ route }}': (context) => const {{ class_name }}(),
+        {% endfor -%}
+      },
+    );
+  }
+}
+
+{% for page in pages %}
+{{ page }}
+{% endfor %}

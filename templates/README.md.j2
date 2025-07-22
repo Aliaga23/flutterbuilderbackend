@@ -1,0 +1,39 @@
+# {{ project_name }}
+
+{{ description }}
+
+## Getting Started
+
+This Flutter project was generated from a visual design configuration.
+
+### Prerequisites
+
+- Flutter SDK (>=3.0.0)
+- Dart SDK (>=3.0.0)
+
+### Installation
+
+1. Clone this repository
+2. Run `flutter pub get` to install dependencies
+3. Run `flutter run` to start the app
+
+### Project Structure
+
+This app contains the following pages:
+{% for page in pages -%}
+- {{ page.name }} ({{ page.route }})
+{% endfor %}
+
+### Features
+
+- Responsive design that adapts to different screen sizes
+- Material Design components
+- Multi-page navigation
+- Custom theme colors
+
+## Built With
+
+- Flutter - The UI framework used
+- Material Design - Design system
+
+## Generated automatically by Flutter Builder

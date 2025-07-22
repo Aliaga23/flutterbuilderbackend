@@ -1,0 +1,24 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  padding: EdgeInsets.all({{ padding_px }}),
+  margin: EdgeInsets.all({{ margin_px }}),
+  decoration: BoxDecoration(
+    color: {{ color }},
+    borderRadius: BorderRadius.circular({{ border_radius_px }}),
+  ),
+  {% if has_child -%}
+  child: {{ child_content }},
+  {% endif -%}
+) width: {{ width }},
+  height: {{ height }},
+  margin: EdgeInsets.all(MediaQuery.of(context).size.width * {{ margin }}),
+  padding: EdgeInsets.all(MediaQuery.of(context).size.width * {{ padding }}),
+  decoration: BoxDecoration(
+    color: {{ color }},
+    borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * {{ border_radius }}),
+  ),
+  {% if has_child %}
+  child: {{ child_content }},
+  {% endif %}
+)

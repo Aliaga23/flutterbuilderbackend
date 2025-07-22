@@ -1,0 +1,17 @@
+{% if orientation == 'horizontal' -%}
+Container(
+  width: {{ width }},
+  child: Divider(
+    thickness: {{ thickness_px }},
+    color: {{ color }},
+  ),
+)
+{% else -%}
+Container(
+  height: {{ height }},
+  child: VerticalDivider(
+    thickness: {{ thickness_px }},
+    color: {{ color }},
+  ),
+)
+{% endif %}

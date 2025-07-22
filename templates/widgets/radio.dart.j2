@@ -1,0 +1,19 @@
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: RadioListTile<bool>(
+    title: Text(
+      '{{ label }}',
+      style: TextStyle(fontSize: {{ font_size_px }}),
+    ),
+    value: true,
+    groupValue: _radioStates['{{ widget_id }}'] ?? false,
+    onChanged: (bool? value) {
+      setState(() {
+        _radioStates['{{ widget_id }}'] = value ?? false;
+      });
+      print('Radio {{ widget_id }} changed: $value');
+    },
+    activeColor: {{ active_color }},
+  ),
+)

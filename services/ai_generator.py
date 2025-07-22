@@ -207,6 +207,7 @@ REQUISITOS DEL CÓDIGO:
 6. Botones que ejecuten acciones reales
 7. Interfaz responsive y bien diseñada
 8. No quiero nada deprecado
+9. No quiero nada de tildes
 EJEMPLOS DE FUNCIONALIDAD:
 - Botón "+" en calculadora: suma los números realmente
 - Botón "Agregar al carrito": añade producto a lista y actualiza total
@@ -445,9 +446,10 @@ REGLAS CRÍTICAS:
 5. Respeta colores y estilos visuales de la imagen
 6. Posiciona elementos de forma que coincidan con la imagen original
 7. CADA widget DEBE tener valores numéricos válidos en size
-8. NUNCA uses null en width o height - siempre números o "100%"
-9. Distribuye elementos con espaciado visual apropiado (y: 50, 120, 190, 260, etc.)
-10. RESPONDE SOLO CON JSON VÁLIDO, SIN MARKDOWN, SIN EXPLICACIONES"""
+8. Nada de tildes, todo en minúsculas y sin caracteres especiales
+9. NUNCA uses null en width o height - siempre números o "100%"
+10. Distribuye elementos con espaciado visual apropiado (y: 50, 120, 190, 260, etc.)
+11. RESPONDE SOLO CON JSON VÁLIDO, SIN MARKDOWN, SIN EXPLICACIONES"""
         
         user_prompt = """Analiza cuidadosamente esta imagen de interfaz de usuario y conviértela en una configuración JSON para Flutter.
 
@@ -458,7 +460,7 @@ Identifica todos los elementos presentes en la imagen:
 - Imágenes y íconos
 - Elementos de navegación
 - Colores y tema general
-
+-
 Mapea cada elemento a un widget de Flutter apropiado, respetando las posiciones y estilos visuales de la imagen original.
 
 Responde SOLO con el JSON válido, sin explicaciones adicionales."""

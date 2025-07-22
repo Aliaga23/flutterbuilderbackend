@@ -236,8 +236,12 @@ async def generate_functional_app_from_json(request: EnhanceProjectRequest, back
         # Crear estructura base del proyecto Flutter
         project_generator._copy_base_template(project_dir)
         
+        # Asegurar que el directorio lib existe
+        lib_dir = os.path.join(project_dir, "lib")
+        os.makedirs(lib_dir, exist_ok=True)
+        
         # Escribir el código Dart funcional generado por AI
-        main_dart_path = os.path.join(project_dir, "lib", "main.dart")
+        main_dart_path = os.path.join(lib_dir, "main.dart")
         with open(main_dart_path, 'w', encoding='utf-8') as f:
             f.write(dart_code)
         

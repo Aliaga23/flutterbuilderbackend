@@ -53,13 +53,28 @@ class ProjectGenerator:
     def _update_pubspec(self, project: FlutterProject, project_dir: str):
         """Update pubspec.yaml with project-specific information"""
         template = self.env.get_template('pubspec.yaml.j2')
+        
+        # Check if project has images to determine if we need cached_network_image
+        has_images = False
+        if project.pages:
+            for page in project.pages:
+                if page.widgets:
+                    for widget in page.widgets:
+                        if widget.type == 'image':
+                            has_images = True
+                            break
+                if has_images:
+                    break
+        
         content = template.render(
             project_name=project.name.lower().replace(' ', '_'),
             description=project.description or f"A new Flutter project: {project.name}",
-            version=project.version or "1.0.0+1"
+            version=project.version or "1.0.0+1",
+            has_images=has_images
         )
         
-        with open(os.path.join(project_dir, 'pubspec.yaml'), 'w', encoding='utf-8') as f:
+        pubspec_path = os.path.join(project_dir, 'pubspec.yaml')
+        with open(pubspec_path, 'w', encoding='utf-8', newline='\n') as f:
             f.write(content)
     
     def _generate_main_dart(self, project: FlutterProject, project_dir: str):

@@ -198,7 +198,7 @@ FUNCIONALIDADES A IMPLEMENTAR SEGÚN EL TIPO:
 - SOCIAL: Posts, likes, comentarios, navegación entre pantallas
 - CUALQUIER APP: Funcionalidad completa según la descripción
 
-REQUISITOS DEL CÓDIGO:
+REQUISITOS DEL CÓDIGO FLUTTER:
 1. Debe compilar sin errores
 2. Toda la funcionalidad debe trabajar
 3. State management apropiado
@@ -208,6 +208,66 @@ REQUISITOS DEL CÓDIGO:
 7. Interfaz responsive y bien diseñada
 8. No quiero nada deprecado
 9. No quiero nada de tildes
+
+APIS FLUTTER ACTUALIZADAS (NO USES APIs DEPRECADAS):
+- ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white) // NO USES primary:
+- TextButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white) // NO USES primary:
+- OutlinedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white) // NO USES primary:
+- AppBar(backgroundColor: Colors.blue, foregroundColor: Colors.white) // NO USES primary:
+- FloatingActionButton(backgroundColor: Colors.blue, foregroundColor: Colors.white) // NO USES primary:
+- Card(color: Colors.white) // NO USES color deprecated
+- Container(color: Colors.blue) // Para colores de fondo
+- Theme.of(context).colorScheme.primary // Para colores del tema
+
+EJEMPLOS DE BOTONES CORRECTOS:
+ElevatedButton(
+  onPressed: () {},
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.blue,
+    foregroundColor: Colors.white,
+  ),
+  child: Text('Botón'),
+)
+
+TextButton(
+  onPressed: () {},
+  style: TextButton.styleFrom(
+    backgroundColor: Colors.blue,
+    foregroundColor: Colors.white,
+  ),
+  child: Text('Botón'),
+)
+
+NAVEGACIÓN CORRECTA:
+- Para BottomNavigationBar con más de 3 items, usa: type: BottomNavigationBarType.fixed
+- Para navegación entre páginas usa: Navigator.pushReplacementNamed(context, '/route');
+- NO uses Navigator.pushNamed para BottomNavigation, usa pushReplacementNamed
+
+EJEMPLO CORRECTO DE BOTTOMNAVIGATIONBAR:
+BottomNavigationBar(
+  currentIndex: currentIndex,
+  type: BottomNavigationBarType.fixed, // IMPORTANTE para más de 3 items
+  selectedItemColor: Colors.blue,
+  unselectedItemColor: Colors.grey,
+  onTap: (index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/search');
+        break;
+    }
+  },
+  items: [...],
+)
+
+IMÁGENES Y WIDGETS:
+- Para imágenes de red: Image.network(url, fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) => Icon(Icons.error))
+- Para imágenes circulares: ClipOval(child: Image.network(...))
+- Para contenedores con decoración: Container(decoration: BoxDecoration(...))
+- Para bordes redondeados: BorderRadius.circular(8.0)
+
 EJEMPLOS DE FUNCIONALIDAD:
 - Botón "+" en calculadora: suma los números realmente
 - Botón "Agregar al carrito": añade producto a lista y actualiza total
@@ -228,7 +288,7 @@ Genera el código Dart completo y funcional para esta aplicación Flutter. El c�
 
         try:
             response = self.client.chat.completions.create(
-                model="o1",
+                model="o3",
                 messages=[
                     {"role": "user", "content": system_prompt + "\n\n" + user_prompt}
                 ],

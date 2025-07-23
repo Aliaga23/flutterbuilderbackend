@@ -1,69 +1,85 @@
 Container(
-  width: MediaQuery.of(context).size.width,
+  width: double.infinity,
   height: {{ height }},
   decoration: {% if show_borders %}BoxDecoration(
     border: Border.all(color: {{ border_color }}, width: 1.0),
     borderRadius: BorderRadius.circular(4.0),
   ){% else %}null{% endif %},
-  child: SingleChildScrollView(
-    scrollDirection: Axis.vertical,
-    child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columnSpacing: {{ padding_px }}.0,
-        horizontalMargin: {{ padding_px }}.0,
-        headingRowHeight: {{ (font_size_px * 3) }}.0,
-        dataRowHeight: {{ (font_size_px * 2.5) }},
-        headingRowColor: MaterialStateProperty.all({{ header_color }}),
-        {% if show_borders %}border: TableBorder.all(
-          color: {{ border_color }},
-          width: 0.5,
-        ),{% endif %}
-        columns: [
-          {% for column in columns -%}
-          DataColumn(
-            label: Container(
-              constraints: BoxConstraints(minWidth: 80),
-              child: Text(
-                '{{ column }}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: {{ header_text_color }},
-                  fontSize: {{ font_size_px }}.0,
-                ),
-                overflow: TextOverflow.visible,
-              ),
-            ),
-          ),
-          {% endfor -%}
-        ],
-        rows: [
-          {% for row in rows -%}
-          DataRow(
-            color: MaterialStateProperty.all(
-              {% if loop.index0 % 2 == 1 %}{{ alternate_row_color }}{% else %}{{ row_color }}{% endif %}
-            ),
-            cells: [
-              {% for cell in row -%}
-              DataCell(
-                Container(
-                  constraints: BoxConstraints(minWidth: 80),
-                  child: Text(
-                    '{{ cell }}',
-                    style: TextStyle(
-                      color: {{ text_color }},
-                      fontSize: {{ font_size_px }}.0,
+  child: LayoutBuilder(
+    builder: (context, constraints) {
+      // Calcular el ancho mínimo necesario para todas las columnas
+      double minTableWidth = {{ columns|length }} * 120.0; // Ancho mínimo por columna
+      double tableWidth = math.max(constraints.maxWidth, minTableWidth);
+      double columnWidth = (tableWidth - ({{ columns|length }} * math.max({{ padding_px }}.0, 8.0)) - ({{ padding_px }}.0 * 2)) / {{ columns|length }};
+      
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Container(
+          width: tableWidth,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            physics: AlwaysScrollableScrollPhysics(),
+            child: DataTable(
+              columnSpacing: math.max({{ padding_px }}.0, 8.0),
+              horizontalMargin: {{ padding_px }}.0,
+              headingRowHeight: {{ (font_size_px * 3) }}.0,
+              dataRowHeight: {{ (font_size_px * 2.5) }},
+              headingRowColor: MaterialStateProperty.all({{ header_color }}),
+              {% if show_borders %}border: TableBorder.all(
+                color: {{ border_color }},
+                width: 0.5,
+              ),{% endif %}
+              columns: [
+                {% for column in columns -%}
+                DataColumn(
+                  label: Container(
+                    width: columnWidth,
+                    child: Text(
+                      '{{ column }}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: {{ header_text_color }},
+                        fontSize: {{ font_size_px }}.0,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
                     ),
-                    overflow: TextOverflow.visible,
                   ),
                 ),
-              ),
-              {% endfor -%}
-            ],
+                {% endfor -%}
+              ],
+              rows: [
+                {% for row in rows -%}
+                DataRow(
+                  color: MaterialStateProperty.all(
+                    {% if loop.index0 % 2 == 1 %}{{ alternate_row_color }}{% else %}{{ row_color }}{% endif %}
+                  ),
+                  cells: [
+                    {% for cell in row -%}
+                    DataCell(
+                      Container(
+                        width: columnWidth,
+                        child: Text(
+                          '{{ cell }}',
+                          style: TextStyle(
+                            color: {{ text_color }},
+                            fontSize: {{ font_size_px }}.0,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ),
+                    {% endfor -%}
+                  ],
+                ),
+                {% endfor -%}
+              ],
+            ),
           ),
-          {% endfor -%}
-        ],
-      ),
-    ),
+        ),
+      );
+    },
   ),
 )

@@ -1,40 +1,44 @@
-DropdownButtonFormField<String>(
-  decoration: InputDecoration(
-    enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: {{ border_color }}, width: {{ border_width }}.0),
-      borderRadius: BorderRadius.circular({{ border_radius }}.0),
+Container(
+  width: {{ width }},
+  height: {{ height }},
+  child: DropdownButtonFormField<String>(
+    decoration: InputDecoration(
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: {{ border_color }}, width: {{ border_width }}.0),
+        borderRadius: BorderRadius.circular({{ border_radius }}.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: {{ border_color }}, width: {{ border_width }}.0),
+        borderRadius: BorderRadius.circular({{ border_radius }}.0),
+      ),
+      filled: true,
+      fillColor: {{ background_color }},
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: {{ border_color }}, width: {{ border_width }}.0),
-      borderRadius: BorderRadius.circular({{ border_radius }}.0),
+    hint: Text(
+      "{{ placeholder }}",
+      style: TextStyle(
+        color: {{ text_color }}.withOpacity(0.5),
+        fontSize: {{ font_size_px }}.0,
+      ),
     ),
-    filled: true,
-    fillColor: {{ background_color }},
-    contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-  ),
-  hint: Text(
-    "{{ placeholder }}",
     style: TextStyle(
-      color: {{ text_color }}.withOpacity(0.5),
+      color: {{ text_color }},
       fontSize: {{ font_size_px }}.0,
     ),
+    iconEnabledColor: {{ arrow_color }},
+    dropdownColor: {{ background_color }},
+    isExpanded: true,
+    items: [
+      {% for item in items -%}
+      DropdownMenuItem<String>(
+        value: "{{ item }}",
+        child: Text("{{ item }}"),
+      ),
+      {% endfor -%}
+    ],
+    onChanged: (newValue) {
+      // Handle dropdown change
+    },
   ),
-  style: TextStyle(
-    color: {{ text_color }},
-    fontSize: {{ font_size_px }}.0,
-  ),
-  iconEnabledColor: {{ arrow_color }},
-  dropdownColor: {{ background_color }},
-  isExpanded: true,
-  items: [
-    {% for item in items -%}
-    DropdownMenuItem<String>(
-      value: "{{ item }}",
-      child: Text("{{ item }}"),
-    ),
-    {% endfor -%}
-  ],
-  onChanged: (newValue) {
-    // Handle dropdown change
-  },
 )

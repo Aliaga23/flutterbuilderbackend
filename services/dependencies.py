@@ -9,7 +9,7 @@ from services.user_service import UserService
 security = HTTPBearer()
 
 
-async def get_current_user(
+def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
 ) -> User:
@@ -33,6 +33,7 @@ async def get_current_user(
     return user
 
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
+
+def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
     """Get current active user (for future use if you add user status)"""
     return current_user
